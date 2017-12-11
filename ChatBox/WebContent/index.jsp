@@ -11,7 +11,7 @@
 <script src="js/jquery-ui.min.js"></script>
 <link href="css/bootstrap.min.css" rel="stylesheet" />
 <script src="js/bootstrap.min.js"></script>
-<link href="css/style.css" rel="stylesheet" /> 
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -19,26 +19,19 @@
 		var control = "";
 		if (who == "me") {
 			control = '<li>' + '<div class="chat self">'
-					+ '<div class="user-photo">' + '</div>'
+					+ '<div>' +'<img src="image/user.png"  class="user-photo">'+ '</div>'
 					+ '<p class="chat-message">' + text + '</p>' + '</div>'
 					+ '</li>';
 		} else {
 			control = '<li>' + '<div class="chat friend">'
-					+ '<div class="user-photo">' + '</div>'
+					+ '<div >' +'<img src="image/bot.png" class="user-photo">'+ '</div>'
 					+ '<p class="chat-message">' + text + '</p>' + '</div>'
 					+ '</li>';
 		}
 		$("ul").append(control);
-		// 		$('#container').css("scrollTop", $("#container").offset().top);
-		// 		 $('#container').animate({scrollTop: $('#container')[0].scrollHeight}, 2000);
 
 	}
-	// 	var $cont = $('#container');
-
-	// 		var height = $('#container').height();
-
 	$(document).ready(function() {
-		// 		$("#send").click(function(e) {
 		$("#txt").keyup(function(e) {
 			if (e.keyCode == 13) {
 				var mymessage = document.getElementById("txt").value;
@@ -55,32 +48,15 @@
 						insertChat("you", data);
 					}
 				});
-				var div = $("#container");
-				div.scrollTop(div.prop('scrollHeight'));
-				alert(div.prop('scrollHeight'));
-
-				// 				var div = $('#container'), height = div.height();
-				// 				 div.animate({scrollTop: height}, 500);
-				// 				alert(height);
-				// 				var od = document.getElementById("container");
-				// 				alert(od.scrollHeight);
-				// 				od.scrollTop = od.scrollHeight;
-				// 				alert(od.scrollTop);
-
-				// 				alert($('#container').height());
-				// 				$('#container').animate({
-				// 					scrollTop : $('#container').height()
-				// 				}, 10000);
-
-				//   			    $('#container').animate({"scrollTop": $('#container')[0].scrollHeight}, 1000);
-				// 				$('#container').scrollTo('100%');
-
+// 				var div = $(".chatlogs");
+// 				div.scrollTop(div.prop('scrollHeight')+1000);
+				$('.chatlogs').animate({scrollTop: $('.chatlogs')[0].scrollHeight}, 500);
 			}
 			;
 		});
 	});
 </script>
-
+<link href="css/style.css" rel="stylesheet" /> 
 </head>
 <body>
 	<h1 id="title">Chatbox Web Application</h1>
@@ -90,12 +66,11 @@
 		<div class="chatbox col-sm-6">
 			<div class="chatlogs">
 				<ul id="container">
+				
 				</ul>
 			</div>
 			<div class="chat-form">
-				<!-- 			<textarea id="txtarea" name="txtms"></textarea> -->
-				<!-- 			<button id="send">Send</button> -->
-				<input type="text" id="txt" placeholder="Type a message" style="width:450px">
+				<input type="text" id="txt" placeholder="Type a message" style="width:650px">
 			</div>
 		</div>
 		<div class="col-sm-3"></div>

@@ -13,8 +13,8 @@ import chatbox.botengine.*;
 @WebServlet("/chatbox.php")
 public class ChatBoxController extends HttpServlet {
 	
-	private static Bot bot = new Bot(); 
-	
+	private Bot bot = new Bot();
+			
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.getRequestDispatcher("index.jsp").forward(req, resp);
@@ -22,7 +22,7 @@ public class ChatBoxController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mymessage = request.getParameter("mes");
-		String reply = bot.replyMessage(mymessage);
+		String reply = this.bot.replyMessage(mymessage);
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.print(reply);

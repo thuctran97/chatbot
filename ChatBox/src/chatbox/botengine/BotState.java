@@ -1,10 +1,10 @@
 package chatbox.botengine;
 
 public enum BotState {
-	GREETING,
-	CHOOSING_PROBLEM,
-	CHOOSING_SUBPROBLEM,
-	ASKING_FOR_ARGUMENT,
+	AFTER_GREETING,
+	AFTER_CHOOSING_PROBLEM,
+	AFTER_CHOOSING_SUBPROBLEM,
+	ASKING_FOR_ARGUMENTS,
 	GUIDING;
 	
 	private static BotState[] vals = values();

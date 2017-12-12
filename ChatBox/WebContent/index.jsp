@@ -18,12 +18,12 @@
 	function insertChat(who, text) {
 		var control = "";
 		if (who == "me") {
-			control = '<li>' + '<div class="chat self">'
+			control = '<li>' + '<div class="chat self" >'
 					+ '<div>' +'<img src="image/user.png"  class="user-photo">'+ '</div>'
 					+ '<p class="chat-message">' + text + '</p>' + '</div>'
 					+ '</li>';
 		} else {
-			control = '<li>' + '<div class="chat friend">'
+			control = '<li>' + '<div class="chat friend" >'
 					+ '<div >' +'<img src="image/bot.png" class="user-photo">'+ '</div>'
 					+ '<p class="chat-message" >' + text + '</p>' + '</div>'
 					+ '</li>';
@@ -57,7 +57,7 @@
 <link href="css/style.css" rel="stylesheet" /> 
 </head>
 <body>
-	<h1 id="title">Chatbox Web Application</h1>
+	<h1 id="title">Chatbot hướng dẫn giải toán khảo sát hàm số</h1>
 	<hr>
 	<div class="row">
 		<div class="col-sm-3"></div>

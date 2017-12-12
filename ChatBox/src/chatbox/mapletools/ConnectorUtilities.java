@@ -9,17 +9,14 @@ public class ConnectorUtilities {
 		
 	}
 	
-	public static Algebraic[] generateArguments(OpenMapleConnector connector, java.util.List<Object> arguments){
+	public static Algebraic[] generateArguments(OpenMapleConnector connector, java.util.List<String> arguments, String[] names){
 		try {
 			Engine engine = connector.getEngine();
 			Algebraic[] argu = new Algebraic[arguments.size()];		
 			for (int i = 0; i < arguments.size(); i++) {
-				if (arguments.get(i) instanceof Integer) {
-					argu[i] = engine.newNumeric((Integer)arguments.get(i));
-				}				
-				else {
-					argu[i] = engine.newMString((String)arguments.get(i));
-				}
+				Name name = (Name)engine.evaluate(names[i] + ":");			
+				name.assign(engine.evaluate(arguments.get(i) + ":"));
+				argu[i] = name;
 			}
 			return argu;
 		}catch(MapleException e) {

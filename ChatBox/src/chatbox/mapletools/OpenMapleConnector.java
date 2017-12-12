@@ -22,6 +22,7 @@ public class OpenMapleConnector {
 		public void textCallBack( Object data, int tag, String output ) throws MapleException{
 	        switch ( tag ){
 		        case MAPLE_TEXT_OUTPUT:
+		        
 		            solution.add(UTF8Encoder.convertUnicodeToUtf8(output));
 		            break;
 		        case MAPLE_TEXT_DIAG:

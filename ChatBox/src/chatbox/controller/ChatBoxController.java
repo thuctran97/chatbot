@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import chatbox.botengine.*;
-import chatbox.mapletools.*;
 
 @WebServlet("/chatbox.php")
 public class ChatBoxController extends HttpServlet {
@@ -23,7 +22,7 @@ public class ChatBoxController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mymessage = request.getParameter("mes");
-		String reply ="Máy trả lời: "+mymessage;
+		String reply = bot.replyMessage(mymessage);
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.print(reply);

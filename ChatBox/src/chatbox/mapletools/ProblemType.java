@@ -1,23 +1,18 @@
 package chatbox.mapletools;
 
 public enum ProblemType {
-	TIEP_TUYEN_SONG_SONG(null,null),
-	TIEP_TUYEN_VUONG_GOC(null,null),
-	KHAO_SAT_HAM_SO("KSHS1[kshs]","(a,b,c,d)");
 	
-	private String proc;
-	private String arguments;
+	PHUONG_TRINH_TIEP_TUYEN("Dạng toán tìm phương trình tiếp tuyến"),
+	CUC_TRI_HAM_SO("Dạng toán tìm cực trị hàm số"),
+	DON_DIEU_HAM_SO("Dạng toán đơn điệu hàm số");
 	
-	ProblemType(String proc, String arguments){
-		this.proc = proc;
-		this.arguments = arguments;
+	private String description;
+	
+	ProblemType(String description) {
+		this.description = description;
 	}
 	
-	public String getProcedureName() {
-		return this.proc;
-	}
-	
-	public String getArguments() {
-		return this.arguments;
+	public String getDescription() {
+		return this.description;
 	}
 }

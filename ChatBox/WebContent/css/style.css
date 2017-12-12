@@ -69,10 +69,13 @@ body {
 }
 
 .self .chat-message {
- background: #1ddced;
- order: -1;
-
+	text-align: right;
+ 	background: #1ddced;
+ 	order: -1;
+ 
 }
+
+
 
 .chat-form {
  margin-top: 20px;

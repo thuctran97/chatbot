@@ -25,11 +25,10 @@
 		} else {
 			control = '<li>' + '<div class="chat friend">'
 					+ '<div >' +'<img src="image/bot.png" class="user-photo">'+ '</div>'
-					+ '<p class="chat-message">' + text + '</p>' + '</div>'
+					+ '<p class="chat-message" >' + text + '</p>' + '</div>'
 					+ '</li>';
 		}
 		$("ul").append(control);
-
 	}
 	$(document).ready(function() {
 		$("#txt").keyup(function(e) {
@@ -37,7 +36,6 @@
 				var mymessage = document.getElementById("txt").value;
 				insertChat("me", mymessage);
 				$(this).val('');
-
 				$.ajax({
 					type : 'POST',
 					url : "chatbox.php",
@@ -65,7 +63,7 @@
 		<div class="col-sm-3"></div>
 		<div class="chatbox col-sm-6">
 			<div class="chatlogs">
-				<ul id="container">
+				<ul id="container" style="list-style-type:none">
 					<li>
 						<div class="chat friend">
 							<div>

@@ -2,6 +2,8 @@ package chatbox.mapletools;
 
 import com.maplesoft.externalcall.MapleException;
 import com.maplesoft.openmaple.*;
+import com.maplesoft.util.encoder.*;
+
 import java.util.*;
 
 public class OpenMapleConnector {
@@ -20,7 +22,7 @@ public class OpenMapleConnector {
 		public void textCallBack( Object data, int tag, String output ) throws MapleException{
 	        switch ( tag ){
 		        case MAPLE_TEXT_OUTPUT:
-		            solution.add(output);
+		            solution.add(UTF8Encoder.convertUnicodeToUtf8(output));
 		            break;
 		        case MAPLE_TEXT_DIAG:
 		            System.out.print( "Diag: " );
@@ -114,7 +116,7 @@ public class OpenMapleConnector {
 		return this.procedure;
 	}
 
-	public void setProcedure(ProblemType proc) {
+	public void setProcedure(Problem proc) {
 		try {
 			this.procedure = (Procedure)this.engine.evaluate("proc" + proc.getArguments() + proc.getProcedureName() + proc.getArguments() + ";end proc:");
 		}catch (MapleException e) {

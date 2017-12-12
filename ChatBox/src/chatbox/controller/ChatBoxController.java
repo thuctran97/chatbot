@@ -8,10 +8,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import chatbox.botengine.*;
+import chatbox.mapletools.*;
 
 @WebServlet("/chatbox.php")
 public class ChatBoxController extends HttpServlet {
+	
+	private static Bot bot = new Bot(); 
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.getRequestDispatcher("index.jsp").forward(req, resp);

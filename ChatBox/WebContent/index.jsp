@@ -66,7 +66,14 @@
 		<div class="chatbox col-sm-6">
 			<div class="chatlogs">
 				<ul id="container">
-				
+					<li>
+						<div class="chat friend">
+							<div>
+								<img src="image/bot.png" class="user-photo">
+							</div>
+							<p class="chat-message">Xin chào mình có thể giúp gì cho bạn</p>
+						</div>
+					</li>
 				</ul>
 			</div>
 			<div class="chat-form">

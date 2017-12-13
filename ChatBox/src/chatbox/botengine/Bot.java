@@ -42,7 +42,6 @@ public class Bot {
 		
 	}*/
 	
-
 	public String handlingAfterGreeting(String equation) {
 		/*if (BotUtil.checkEquation(equation)) {*/
 			this.arguments.add(equation);

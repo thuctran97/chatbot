@@ -55,7 +55,7 @@ public enum Problem{
 							null,
 							null,
 							null,
-							"Tìm điệu kiện để hàm số đạt cực trị tại x<subscript>o</subscript>",
+							"Tìm điệu kiện để hàm số đạt cực trị tại x<sub>o</sub>",
 							ProblemType.CUC_TRI_HAM_SO,
 							2),
 	

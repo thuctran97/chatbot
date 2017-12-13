@@ -21,8 +21,7 @@ public class OpenMapleConnector {
 		}
 		public void textCallBack( Object data, int tag, String output ) throws MapleException{
 	        switch ( tag ){
-		        case MAPLE_TEXT_OUTPUT:
-		        
+		        case MAPLE_TEXT_OUTPUT:		        
 		            solution.add(UTF8Encoder.convertUnicodeToUtf8(output));
 		            break;
 		        case MAPLE_TEXT_DIAG:
@@ -119,7 +118,8 @@ public class OpenMapleConnector {
 
 	public void setProcedure(Problem proc) {
 		try {
-			this.procedure = (Procedure)this.engine.evaluate("proc" + proc.getArguments() + proc.getProcedureName() + proc.getArguments() + ";end proc:");
+			String eval = "proc" + proc.getArguments() + proc.getProcedureName() + proc.getArguments() +";end proc:";
+			this.procedure = (Procedure)this.engine.evaluate(eval);
 		}catch (MapleException e) {
 			System.out.println("Could not intialize the procedure");
 		}

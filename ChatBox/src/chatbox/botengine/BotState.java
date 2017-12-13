@@ -12,4 +12,8 @@ public enum BotState {
 	public BotState next(){
 		return vals[(this.ordinal() + 1) % vals.length];
 	}
+	
+	public BotState prev(){
+		return vals[(this.ordinal() - 1) % vals.length];
+	}
 }

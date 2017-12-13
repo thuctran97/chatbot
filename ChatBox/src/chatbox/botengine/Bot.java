@@ -51,9 +51,12 @@ public class Bot {
 	}
 	
 	public String handlingAfterChoosingProblem(String msg) {
+		if (msg.compareTo("Quay lại") == 0){
+			this.state = this.state.prev();
+			return handlingAfterGreeting(msg);
+		}
 		try {
 			int option = Integer.parseInt(msg);
-			
 			if ( option > 0 && option < 4 ) {
 				StringBuilder response = new StringBuilder("Bạn muốn chọn bài toán nào (chọn số thứ tự)<br//>");
 				for (Problem problem : problems.get(ProblemType.values()[option - 1]).values()) {
@@ -72,6 +75,10 @@ public class Bot {
 	}
 		
 	public String handlingAfterChoosingSubProblem(String msg) {
+		if (msg.compareTo("Quay lại") == 0){
+			this.state = this.state.prev();
+			return handlingAfterChoosingProblem(msg);
+		}
 		try {
 			int option = Integer.parseInt(msg);
 			this.currentProblem = problems.get(this.currentProblemType).get(option);

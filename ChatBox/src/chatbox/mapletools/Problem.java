@@ -76,9 +76,9 @@ public enum Problem{
 						2),
 	
 	KHAO_SAT_HAM_SO("KSHS1[kshs]",
-					"(a,b,c,d)",
-					new String[] {"a","b","c","d"},					
-					new String[] {"Hệ sô 1","Hệ số 2","Hệ số 3","Hệ số 4"},
+					"(f)",
+					new String[] {"f"},					
+					new String[] {""},
 					"Khảo sát hàm số",
 					ProblemType.DON_DIEU_HAM_SO,
 					3);

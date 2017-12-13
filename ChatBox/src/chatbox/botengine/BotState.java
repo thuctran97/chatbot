@@ -1,6 +1,7 @@
 package chatbox.botengine;
 
 public enum BotState {
+	GREETING,
 	AFTER_GREETING,
 	AFTER_CHOOSING_PROBLEM,
 	AFTER_CHOOSING_SUBPROBLEM,

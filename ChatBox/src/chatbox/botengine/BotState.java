@@ -1,7 +1,6 @@
 package chatbox.botengine;
 
 public enum BotState {
-	GREETING,
 	AFTER_GREETING,
 	AFTER_CHOOSING_PROBLEM,
 	AFTER_CHOOSING_SUBPROBLEM,
@@ -11,10 +10,20 @@ public enum BotState {
 	private static BotState[] vals = values();
 	
 	public BotState next(){
-		return vals[(this.ordinal() + 1) % vals.length];
+		int index = (this.ordinal() + 1) % vals.length;
+		if (index < 0)
+			return vals[0];
+		else if (index >= vals.length)
+			return vals[0];
+		return vals[index];
 	}
 	
 	public BotState prev(){
-		return vals[(this.ordinal() - 1) % vals.length];
+		int index = (this.ordinal() - 1) % vals.length;
+		if (index < 0)
+			return vals[0];
+		else if (index >= vals.length)
+			return vals[0];
+		return vals[index];
 	}
 }

@@ -10,6 +10,17 @@
 <link href="css/jquery-ui.min.css" rel="stylesheet" />
 <script src="js/jquery-ui.min.js"></script>
 <link href="css/bootstrap.min.css" rel="stylesheet" />
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" async
+  src="js/MathJax/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
 <script src="js/bootstrap.min.js"></script>
 
 <script
@@ -18,18 +29,22 @@
 	function insertChat(who, text) {
 		var control = "";
 		if (who == "me") {
-			control = '<li>' + '<div class="chat self" >'
+			control = '<li lang="latex">' + '<div class="chat self" >'
 					+ '<div>' +'<img src="image/user.png"  class="user-photo">'+ '</div>'
 					+ '<p class="chat-message">' + text + '</p>' + '</div>'
 					+ '</li>';
 		} else {
-			control = '<li>' + '<div class="chat friend" >'
+			control = '<li lang="latex">' + '<div class="chat friend" >'
 					+ '<div >' +'<img src="image/bot.png" class="user-photo">'+ '</div>'
 					+ '<p class="chat-message" >' + text + '</p>' + '</div>'
 					+ '</li>';
 		}
 		$("ul").append(control);
+		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	}
+	
+	
+	
 	$(document).ready(function() {
 		$("#txt").keyup(function(e) {
 			if (e.keyCode == 13) {

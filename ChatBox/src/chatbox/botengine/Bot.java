@@ -81,6 +81,16 @@ public class Bot {
 			return "Lựa chọn của bạn không hợp lệ, bạn hãy chọn lại";				
 		}
 	}
+	
+	public String getSolution(StringBuilder response) {
+		List<KnowledgeBase> solution = this.parser.parsing(this.getSolution(this.arguments, this.currentProblem.getVariableNames()));
+		response.append("Lời giải cho bài này là:<br//>");
+		int i = 0;
+		for (KnowledgeBase sol : solution) {
+			response.append("Step ").append(i++).append(" ").append(sol.toString()).append("<br//>");					
+		}
+		return response.toString();
+	}
 		
 	public String handlingAfterChoosingSubProblem(String msg) {
 		if (SentenceGroups.revertSentences.contains(msg.toLowerCase())){
@@ -98,13 +108,7 @@ public class Bot {
 			StringBuilder response =  new StringBuilder("Bạn đã chọn bài toán ");
 			response.append(this.currentProblem.getDescription()).append("<br/.>");
 			if (this.currentProblem.getVariableNames().length == 1) {			
-				List<KnowledgeBase> solution = this.parser.parsing(this.getSolution(this.arguments, this.currentProblem.getVariableNames()));
-				response.append("Lời giải cho bài này là:<br//>");
-				int i = 0;
-				for (KnowledgeBase sol : solution) {
-					response.append("Step ").append(i++).append(sol.toString()).append("<br//>");					
-				}
-				return response.toString();
+				return this.getSolution(response);
 			}
 			response.append("Mời bạn nhập ").append((currentProblem.getVariableDescription()[currentProblem.getCurrentArgumentsIndex()]));
 			this.state = this.state.next();

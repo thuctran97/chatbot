@@ -18,9 +18,7 @@
     }
   });
 </script>
-<script type="text/javascript" async
-  src="js/MathJax/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
 <script src="js/bootstrap.min.js"></script>
 
 <script

@@ -31,8 +31,8 @@ public class KnowledgeBase{
 	
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(this.theory);
-		builder.append(": ");
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.theory).append(" ");//.append("$").append(this.theory).append("$: ");		
 		for (String equa : equations) {
 			builder.append("$").append(equa).append("$");
 		}

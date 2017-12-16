@@ -1,10 +1,11 @@
-package chatbox.mapletools;
+package chatbot.mapletools;
 
 import com.maplesoft.externalcall.MapleException;
 import com.maplesoft.openmaple.*;
 import com.maplesoft.util.encoder.*;
 
 import java.util.*;
+import chatbot.knowledgebase.*;
 
 public class OpenMapleConnector {
 	private  Engine engine;
@@ -16,12 +17,15 @@ public class OpenMapleConnector {
 		
 		public static java.util.List<String> solution = new ArrayList<>();
 		
+		private static String latex ="";
+		
 		private CallBacks(){
 			this.limitExceeded = false;
 		}
 		public void textCallBack( Object data, int tag, String output ) throws MapleException{
 	        switch ( tag ){
-		        case MAPLE_TEXT_OUTPUT:		        		            
+		        case MAPLE_TEXT_OUTPUT:		
+		        	latex = output;
 		            break;
 		        case MAPLE_TEXT_DIAG:
 		            System.out.print( "Diag: " );
@@ -130,12 +134,29 @@ public class OpenMapleConnector {
 				CallBacks.clearSolution();
 				this.procedure.execute(arguments);
 				return CallBacks.getSolution();
-			} catch (MapleException e)
-		{				
-				System.out.println("Could not execute the procedure");
-			}
+			} catch (MapleException e){				
+				System.out.println("Could not execute the procedure");				
+			}		
 		return null;
 	}
-
+	
+	public void reset(){
+		try {
+			this.engine.restart();
+		}catch (MapleException e) {
+			System.out.println("Không reset Maple được");
+		}
+	}
+	
+	public static String getLatex(String expression) {
+		try {
+			CallBacks.latex = "";		
+			Engine temp = new Engine(new String[] {"java"}, new CallBacks(), null, null);
+			temp.evaluate("latex(" + expression + ");");
+			return CallBacks.latex;
+		}catch (MapleException e) {
+			return expression;
+		}
+	}
 	
 }

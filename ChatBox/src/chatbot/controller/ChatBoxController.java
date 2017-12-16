@@ -1,4 +1,4 @@
-package chatbox.controller;
+package chatbot.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,11 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import chatbox.botengine.*;
+
+import chatbot.botengine.*;
 
 @WebServlet("/chatbox.php")
 public class ChatBoxController extends HttpServlet {
 	
+	private static final long serialVersionUID = 1L;
 	private Bot bot = new Bot();
 			
 	@Override

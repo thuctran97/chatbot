@@ -1,10 +1,11 @@
-package chatbox.botengine;
+package chatbot.botengine;
 
-import chatbox.mapletools.*;
-import chatbot.knowledgerendering.*;
 import java.util.*;
 import com.maplesoft.openmaple.Algebraic;
 
+import chatbot.knowledgebase.*;
+import chatbot.mapletools.*;
+import chatbot.suggestionsengine.*;
 
 public class Bot {
 	
@@ -13,7 +14,7 @@ public class Bot {
 	private List<String> arguments;
 	private ProblemType currentProblemType;
 	private Problem currentProblem;
-	private SolutionParser parser;
+	private SuggestionsProvider instructor;
 	
 	private static Map<ProblemType, Map<Integer, Problem>> problems = createSelectionOfSubProblem();	
 	
@@ -33,15 +34,18 @@ public class Bot {
 		this.connector = new OpenMapleConnector();
 		this.state = BotState.AFTER_GREETING;
 		this.arguments = new ArrayList<>();
-		this.parser = new SolutionParser();
+		this.instructor = new SuggestionsProvider();
 	}
 	
 	public OpenMapleConnector getConnector() {
 		return this.connector;		
 	}
-		
+	
+	public void setProblem(Problem proc) {
+		this.connector.setProcedure(proc);
+	}
+	
 	public String handlingAfterGreeting(String equation) {
-		/*if (BotUtil.checkEquation(equation)) {*/
 			this.arguments.add(equation);
 			StringBuilder response = new StringBuilder("Bạn muốn làm dạng toán nào với hàm số này (chọn số thứ tự)<br//>");
 			for (ProblemType type : problems.keySet()) {
@@ -49,9 +53,6 @@ public class Bot {
 			}			
 			this.state = this.state.next();
 			return response.toString();
-/*		}else {
-			return "Cái bạn nhập ko phải hàm số, mời nhập lại";
-		}*/
 	}
 	
 	public String handlingAfterChoosingProblem(String msg) {
@@ -81,17 +82,7 @@ public class Bot {
 			return "Lựa chọn của bạn không hợp lệ, bạn hãy chọn lại";				
 		}
 	}
-	
-	public String getSolution(StringBuilder response) {
-		List<KnowledgeBase> solution = this.parser.parsing(this.getSolution(this.arguments, this.currentProblem.getVariableNames()));
-		response.append("Lời giải cho bài này là:<br//>");
-		int i = 0;
-		for (KnowledgeBase sol : solution) {
-			response.append("Step ").append(i++).append(" ").append(sol.toString()).append("<br//>");					
-		}
-		return response.toString();
-	}
-		
+			
 	public String handlingAfterChoosingSubProblem(String msg) {
 		if (SentenceGroups.revertSentences.contains(msg.toLowerCase())){
 			this.state = this.state.prev();
@@ -107,8 +98,10 @@ public class Bot {
 			this.connector.setProcedure(this.currentProblem);
 			StringBuilder response =  new StringBuilder("Bạn đã chọn bài toán ");
 			response.append(this.currentProblem.getDescription()).append("<br/.>");
-			if (this.currentProblem.getVariableNames().length == 1) {			
-				return this.getSolution(response);
+			if (this.currentProblem.getVariableNames().length == 1) {	
+				this.state = BotState.PROVIDING_SUGGESTION;
+				this.instructor.setSolutions(this.getSolutionSenteces());	
+				return this.providingSuggestion("");				 
 			}
 			response.append("Mời bạn nhập ").append((currentProblem.getVariableDescription()[currentProblem.getCurrentArgumentsIndex()]));
 			this.state = this.state.next();
@@ -128,17 +121,21 @@ public class Bot {
 			this.reset();
 			return "Mời bạn nhập một hàm số khác";
 		}
-		StringBuilder response = new StringBuilder();
+		StringBuilder response = new StringBuilder();		
+		this.arguments.add(value);		
+		this.currentProblem.increaseCurrentArgumentsIndex();	
 		if (this.currentProblem.getCurrentArgumentsIndex() == this.currentProblem.getVariableNames().length - 1) {					
 			this.state = state.next();
-			return "Bắt đầu hướng dẫn";
+			this.instructor.setSolutions(this.getSolutionSenteces());	
+			return this.providingSuggestion("");
 		}
-		else {
-			this.arguments.add(value);		
-			this.currentProblem.increaseCurrentArgumentsIndex();			
-			response.append("Mời bạn nhập ").append((currentProblem.getVariableDescription()[currentProblem.getCurrentArgumentsIndex()]));			
-			return response.toString();
-		}
+		response.append("Mời bạn nhập ").append((currentProblem.getVariableDescription()[currentProblem.getCurrentArgumentsIndex()]));			
+		return response.toString();
+		
+	}
+	
+	public String providingSuggestion(String msg) {
+		return this.instructor.provideSuggestion(msg);
 	}
 	
 	public String replyMessage(String msg){
@@ -154,15 +151,19 @@ public class Bot {
 		else if (this.state.equals(BotState.ASKING_FOR_ARGUMENTS)) {
 			return this.handlingAskingForArguments(msg);
 		}
-		
-				
+		else if (this.state.equals(BotState.PROVIDING_SUGGESTION)) {
+			return this.providingSuggestion(msg);
+		}
 		else {
 			return null;
 		}
 	}
 	
-	public void setProblem(Problem proc) {
-		this.connector.setProcedure(proc);
+	
+	
+	public List<KnowledgeBase> getSolutionSenteces() {		
+		List<KnowledgeBase> solution = Parser.parsingSolution(this.getSolution(this.arguments, this.currentProblem.getVariableNames()));		
+		return solution;
 	}
 	
 	public List<String> getSolution(List<String> arguments, String[] variableNames){
@@ -175,6 +176,7 @@ public class Bot {
 		this.state = BotState.AFTER_GREETING;
 		this.currentProblemType = null;
 		this.currentProblem = null;
+		this.connector.reset();
 	}
 	
 	

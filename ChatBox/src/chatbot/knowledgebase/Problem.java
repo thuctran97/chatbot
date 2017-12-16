@@ -1,4 +1,4 @@
-package chatbox.mapletools;
+package chatbot.knowledgebase;
 
 	
 public enum Problem{

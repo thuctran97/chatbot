@@ -1,4 +1,4 @@
-package chatbox.mapletools;
+package chatbot.mapletools;
 
 import com.maplesoft.externalcall.MapleException;
 import com.maplesoft.openmaple.*;
@@ -8,7 +8,6 @@ public class ConnectorUtilities {
 	public ConnectorUtilities() {
 		
 	}
-	
 	public static Algebraic[] generateArguments(OpenMapleConnector connector, java.util.List<String> arguments, String[] names){
 		try {
 			Engine engine = connector.getEngine();

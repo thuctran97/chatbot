@@ -1,7 +1,4 @@
-package chatbot.knowledgerendering;
-
-import java.util.Arrays;
-import java.util.List;
+package chatbot.knowledgebase;
 
 public class Equation {
 	
@@ -40,11 +37,13 @@ public class Equation {
 		this.lhs = lhs;
 	}
 	
-	public Equation(String equation) {
-		String [] temp = equation.split("(=|>|<|(>=)|(<=)|(=<)|(=>))");
+	public Equation(String equa) {
+		String [] temp = equa.split("(=|>|<|(>=)|(<=)|(=<)|(=>))");
 		this.rhs = temp[0];		
 		this.lhs = temp[temp.length -1];
-		this.operator = equation.substring(this.rhs.length() , equation.indexOf(lhs));
+		int start = this.rhs.length();
+		int end = equa.length() - this.lhs.length();
+		this.operator = equa.substring(start, end);
 	 }
 	
 	@Override
@@ -52,7 +51,12 @@ public class Equation {
 		return this.rhs + " " + this.operator + " " + this.lhs;
 	}
 	
-	public static void main(String [] args) {
-		System.out.println(new Equation("x2<=156"));
+	public boolean matchValue(String value) {
+		return this.lhs.compareTo(value) == 0;
 	}
+	
+	
+	/*public static void main(String [] args) {
+		System.out.println(new Equation("x2<=156"));
+	}*/
 }

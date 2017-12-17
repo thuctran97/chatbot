@@ -15,9 +15,5 @@ public class Parser {
 		}
 		return base;
 	}
-	
-	public static List<String> parsingValueAnswer(){
-		return null;
-	}
-	
+		
 }

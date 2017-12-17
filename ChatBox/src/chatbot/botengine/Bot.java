@@ -34,7 +34,7 @@ public class Bot {
 		this.connector = new OpenMapleConnector();
 		this.state = BotState.AFTER_GREETING;
 		this.arguments = new ArrayList<>();
-		this.instructor = new SuggestionsProvider();
+		this.instructor = new SuggestionsProvider(this);
 	}
 	
 	public OpenMapleConnector getConnector() {
@@ -137,28 +137,35 @@ public class Bot {
 	public String providingSuggestion(String msg) {
 		return this.instructor.provideSuggestion(msg);
 	}
+
+	public String handlingProvidingSuggestion(String msg) {
+		String response = this.providingSuggestion(msg);
+		if (this.instructor.getState() == SuggestionTypes.ENDING)
+			this.reset();
+		return response;
+	}
 	
 	public String replyMessage(String msg){
 		if (this.state.equals(BotState.AFTER_GREETING)){
 			return this.handlingAfterGreeting(msg);
 		}		
+		
 		else if (this.state.equals(BotState.AFTER_CHOOSING_PROBLEM)) {
 			return this.handlingAfterChoosingProblem(msg);
 		}
+		
 		else if (this.state.equals(BotState.AFTER_CHOOSING_SUBPROBLEM)) {
 			return this.handlingAfterChoosingSubProblem(msg);
 		}
+		
 		else if (this.state.equals(BotState.ASKING_FOR_ARGUMENTS)) {
 			return this.handlingAskingForArguments(msg);
 		}
-		else if (this.state.equals(BotState.PROVIDING_SUGGESTION)) {
-			return this.providingSuggestion(msg);
-		}
-		else {
-			return null;
+		
+		else {			
+			return this.handlingProvidingSuggestion(msg);			
 		}
 	}
-	
 	
 	
 	public List<KnowledgeBase> getSolutionSenteces() {		
@@ -177,6 +184,7 @@ public class Bot {
 		this.currentProblemType = null;
 		this.currentProblem = null;
 		this.connector.reset();
+		this.instructor.reset();
 	}
 	
 	

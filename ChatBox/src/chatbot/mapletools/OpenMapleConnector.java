@@ -19,19 +19,26 @@ public class OpenMapleConnector {
 		
 		private static String latex ="";
 		
+		private static int tagLatex = 0;
+		private static int tagSolution = 0;
+		
+		
 		private CallBacks(){
 			this.limitExceeded = false;
 		}
 		public void textCallBack( Object data, int tag, String output ) throws MapleException{
 	        switch ( tag ){
 		        case MAPLE_TEXT_OUTPUT:		
-		        	latex = output;
+		        	
 		            break;
 		        case MAPLE_TEXT_DIAG:
 		            System.out.print( "Diag: " );
 		            break;
 		        case MAPLE_TEXT_MISC:
-		        	solution.add(UTF8Encoder.convertUnicodeToUtf8(output));		            
+		        	if (tagLatex == 1 && tagSolution == 0)
+		        		latex=output;
+		        	else
+		        		solution.add(UTF8Encoder.convertUnicodeToUtf8(output));	
 		            break;
 		        case MAPLE_TEXT_HELP:
 		            System.out.print( "Help: " );
@@ -99,7 +106,8 @@ public class OpenMapleConnector {
 	
 	    public static void clearSolution() {
 	    	solution.clear();
-	    }
+	    }	    
+	   
 	}
 	
 	public OpenMapleConnector() {
@@ -132,6 +140,8 @@ public class OpenMapleConnector {
 		if (this.procedure != null)
 			try {
 				CallBacks.clearSolution();
+				CallBacks.tagLatex = 0;
+				CallBacks.tagSolution = 1;
 				this.procedure.execute(arguments);
 				return CallBacks.getSolution();
 			} catch (MapleException e){				
@@ -148,13 +158,15 @@ public class OpenMapleConnector {
 		}
 	}
 	
-	public static String getLatex(String expression) {
+	public String getLatex(String expression) {
 		try {
-			CallBacks.latex = "";		
-			Engine temp = new Engine(new String[] {"java"}, new CallBacks(), null, null);
-			temp.evaluate("latex(" + expression + ");");
+			CallBacks.latex = "";
+			CallBacks.tagLatex = 1;
+			CallBacks.tagSolution = 0;
+			this.engine.evaluate("latex(" + expression + ");");
 			return CallBacks.latex;
 		}catch (MapleException e) {
+			System.out.print(e);
 			return expression;
 		}
 	}

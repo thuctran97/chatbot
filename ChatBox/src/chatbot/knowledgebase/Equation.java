@@ -6,6 +6,8 @@ public class Equation {
 	private	String lhs;
 	private String operator;
 	
+	String[] comparisionOperator = new String[]{">=","<=",">","<","="};
+	
 	public String getRhs() {
 		return rhs;
 	}
@@ -37,26 +39,45 @@ public class Equation {
 		this.lhs = lhs;
 	}
 	
-	public Equation(String equa) {
-		String [] temp = equa.split("(=|>|<|(>=)|(<=)|(=<)|(=>))");
-		this.rhs = temp[0];		
-		this.lhs = temp[temp.length -1];
-		int start = this.rhs.length();
-		int end = equa.length() - this.lhs.length();
-		this.operator = equa.substring(start, end);
+	public Equation(String equa) {		
+		int pos;
+		for (int i = 0; i < comparisionOperator.length; i++) {
+			if ((pos = equa.lastIndexOf(comparisionOperator[i])) != - 1) {				
+				this.operator = equa.substring(pos, pos + comparisionOperator[i].length());
+				this.lhs = equa.substring(0, pos);
+				this.rhs = equa.substring(pos + comparisionOperator[i].length(), equa.length());
+				break;
+			}
+		}
 	 }
 	
 	@Override
 	public String toString() {
-		return this.rhs + " " + this.operator + " " + this.lhs;
+		return this.lhs + this.operator + this.rhs;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == null)
+			return false;
+		if (this == o)
+			return true;
+		if (!(o instanceof Equation))
+			return false;
+		Equation equa = (Equation)o;
+		
+		return (((this.lhs.compareTo(equa.getLhs()) == 0) &&
+				(this.rhs.compareTo(equa.getRhs()) == 0) &&
+				(this.operator.compareTo(equa.getOperator()) == 0)) ||
+				(this.operator.compareTo(equa.getOperator()) == 0 &&
+				(this.rhs.compareTo(equa.getRhs()) == 0)));
 	}
 	
 	public boolean matchValue(String value) {
-		return this.lhs.compareTo(value) == 0;
+		return this.rhs.compareTo(value) == 0;
 	}
 	
-	
-	/*public static void main(String [] args) {
-		System.out.println(new Equation("x2<=156"));
-	}*/
+	public static void main(String [] args) {
+		System.out.println(new Equation("Limit((-x+2)/(x+1),x = -1,left)=-infinity"));
+	}
 }

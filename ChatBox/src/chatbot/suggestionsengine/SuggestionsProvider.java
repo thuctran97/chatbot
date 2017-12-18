@@ -67,25 +67,31 @@ public class SuggestionsProvider {
 		builder.append("Bạn cần phải tính như thế này:<br//>");
 		List<Equation> equations = current.getEquations();
 		for (Equation equation : equations)
-		builder.append("$").append(bot.getConnector().getLatex(equation.toString())).append("$<br//>");		
+		builder.append("$").append(equation.getLatex()).append("$<br//>");		
 		return builder.toString();		
 	}
 	
 	public String handlingNegativeAnswer(KnowledgeBase current) {
 		StringBuilder response = new StringBuilder();
-		response.append(this.provideEquationAnswer(current));	
-		response.append("Tiếp theo ");
-		if (!currentKnowledgeIter.hasNext()) {
-			this.state = SuggestionTypes.ENDING;
-			response.append("<br//>Đã xong, mời bạn nhập hàm số khác");
-		}
-		else {
+		response.append(this.provideEquationAnswer(current));			
+		if (currentKnowledgeIter.hasNext()) {
+			response.append("Bước tiếp theo ");
 			this.currentKnowledge = this.currentKnowledgeIter.next();
 			response.append(this.provideTheory(this.currentKnowledge));
 		}				
 		return response.toString();
 	}
 			
+	
+	public String provideFormula(KnowledgeBase current) {
+		this.state = SuggestionTypes.ASKING_FORMULAR;
+		StringBuilder builder = new StringBuilder();
+		builder.append("Gợi ý nhé: bạn phải " );
+		builder.append(current.getFormula());
+		builder.append("<br//>Bạn đã hiểu chưa?");
+		return builder.toString();		
+	}
+	
 	public String provideSuggestion(String answer) {
 		StringBuilder response = new StringBuilder();
 		if (!currentKnowledgeIter.hasNext()) {
@@ -97,12 +103,18 @@ public class SuggestionsProvider {
 				response.append("Để giải bài toán này trước hết ");
 				response.append(this.provideTheory(this.currentKnowledge));					
 			}
-			else if (this.state == SuggestionTypes.ASKING_THEORY && SentenceGroups.positiveResponse.contains(answer)) {
+			else if ((this.state == SuggestionTypes.ASKING_THEORY && SentenceGroups.positiveResponse.contains(answer)) ||
+					(this.state == SuggestionTypes.ASKING_FORMULAR && SentenceGroups.positiveResponse.contains(answer))) {
 				this.state = SuggestionTypes.ASKING_VAR;
 				response.append(this.provideEquation(this.currentKnowledge));				
 			}
 			else if (this.state == SuggestionTypes.ASKING_THEORY && SentenceGroups.negativeResponse.contains(answer)) {							
-				response.append(this.handlingNegativeAnswer(this.currentKnowledge));
+				response.append(this.provideFormula(this.currentKnowledge));
+			}
+			
+			else if (this.state == SuggestionTypes.ASKING_FORMULAR && SentenceGroups.negativeResponse.contains(answer)) {
+				response.append("Vậy để mình cho bạn xem lời giải của bước này: <br//>");
+				response.append(this.provideEquationAnswer(this.currentKnowledge));
 			}
 			
 			else if (this.state == SuggestionTypes.ASKING_VAR && SentenceGroups.negativeResponse.contains(answer)) {

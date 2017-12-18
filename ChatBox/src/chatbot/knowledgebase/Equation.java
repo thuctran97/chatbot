@@ -5,6 +5,7 @@ public class Equation {
 	private String rhs;
 	private	String lhs;
 	private String operator;
+	private String latex;
 	
 	String[] comparisionOperator = new String[]{">=","<=",">","<","="};
 	
@@ -31,6 +32,10 @@ public class Equation {
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
+	
+	public String getLatex() {
+		return this.latex;
+	}
 
 	
 	public Equation(String rhs, String operator, String lhs) {
@@ -39,7 +44,7 @@ public class Equation {
 		this.lhs = lhs;
 	}
 	
-	public Equation(String equa) {		
+	public Equation(String equa, String latex) {		
 		int pos;
 		for (int i = 0; i < comparisionOperator.length; i++) {
 			if ((pos = equa.lastIndexOf(comparisionOperator[i])) != - 1) {				
@@ -49,7 +54,9 @@ public class Equation {
 				break;
 			}
 		}
-	 }
+		this.latex = latex;
+	}
+		
 	
 	@Override
 	public String toString() {
@@ -76,8 +83,5 @@ public class Equation {
 	public boolean matchValue(String value) {
 		return this.rhs.compareTo(value) == 0;
 	}
-	
-	public static void main(String [] args) {
-		System.out.println(new Equation("Limit((-x+2)/(x+1),x = -1,left)=-infinity"));
-	}
+
 }

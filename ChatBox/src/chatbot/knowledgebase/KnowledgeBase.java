@@ -6,8 +6,7 @@ import chatbot.botengine.*;
 public class KnowledgeBase{
 	private String theory;
 	private String formula;
-	private List<Equation> equations;
-	
+	private List<Equation> equations;	
 	public String getTheory() {
 		return theory;
 	}
@@ -23,9 +22,10 @@ public class KnowledgeBase{
 
 	public KnowledgeBase(String[] tokens) {
 		this.theory = tokens[0];
+		this.formula = tokens[1];
 		this.equations = new ArrayList<>();
-		for (int i = 1; i < tokens.length; i++)
-			equations.add(new Equation(tokens[i]));
+		for (int i = 2; i < tokens.length; i+= 2)
+			equations.add(new Equation(tokens[i], tokens[i+1]));
 	}
 	
 	@Override

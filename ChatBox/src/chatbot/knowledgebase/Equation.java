@@ -81,7 +81,8 @@ public class Equation {
 	}
 	
 	public boolean matchValue(String value) {
-		return this.rhs.compareTo(value) == 0;
+		return (this.operator + this.rhs).compareTo(value) == 0 || 
+				this.rhs.compareTo(value) == 0;
 	}
 
 }

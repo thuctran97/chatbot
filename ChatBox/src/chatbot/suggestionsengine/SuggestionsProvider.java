@@ -48,17 +48,17 @@ public class SuggestionsProvider {
 	}
 
 	public String provideTheory(KnowledgeBase current) {
-		StringBuilder builder = new StringBuilder("bạn cần phải <br//>");	
+		StringBuilder builder = new StringBuilder("bạn cần phải ");	
 		builder.append(current.getTheory());
 		if (this.currentKnowledgeIter.hasNext())
-			builder.append("<br//>Bạn đã biết chưa?");
+			builder.append("<br//>Bạn đã hiểu chưa?");
 		return builder.toString();
 	}
 	
 	public String provideEquation(KnowledgeBase current) {
 		StringBuilder builder = new StringBuilder();
 		String rhs = current.getAllLhs(this.bot);
-		builder.append("Vậy bạn hãy nhập đáp án của ").append(rhs).append(" mỗi đáp án cách nhau bởi dấu \",\"");		
+		builder.append("Vậy bạn hãy nhập đáp án của ").append(rhs);		
 		return builder.toString();
 	}
 	
@@ -67,22 +67,16 @@ public class SuggestionsProvider {
 		builder.append("Bạn cần phải tính như thế này:<br//>");
 		List<Equation> equations = current.getEquations();
 		for (Equation equation : equations)
-		builder.append("$").append(equation.getLatex()).append("$<br//>");		
+		builder.append("$").append(equation.getLatex()).append("$<br//>");
+		if (currentKnowledgeIter.hasNext()) {
+			builder.append("Bước tiếp theo ");
+			this.state = SuggestionTypes.ASKING_THEORY;
+			this.currentKnowledge = this.currentKnowledgeIter.next();
+			builder.append(this.provideTheory(this.currentKnowledge));
+		}
 		return builder.toString();		
 	}
-	
-	public String handlingNegativeAnswer(KnowledgeBase current) {
-		StringBuilder response = new StringBuilder();
-		response.append(this.provideEquationAnswer(current));			
-		if (currentKnowledgeIter.hasNext()) {
-			response.append("Bước tiếp theo ");
-			this.currentKnowledge = this.currentKnowledgeIter.next();
-			response.append(this.provideTheory(this.currentKnowledge));
-		}				
-		return response.toString();
-	}
 			
-	
 	public String provideFormula(KnowledgeBase current) {
 		this.state = SuggestionTypes.ASKING_FORMULAR;
 		StringBuilder builder = new StringBuilder();
@@ -125,8 +119,11 @@ public class SuggestionsProvider {
 			else if (this.state == SuggestionTypes.ASKING_VAR && this.currentKnowledge.checkAnswer(answer)){
 				response.append("Đúng rồi<br//>Tiếp theo ");
 				this.state = SuggestionTypes.ASKING_THEORY;		
-				this.currentKnowledge = this.currentKnowledgeIter.next();
-				response.append(this.provideTheory(this.currentKnowledge));	
+				if (currentKnowledgeIter.hasNext()) {
+					response.append("Bước tiếp theo ");
+					this.currentKnowledge = this.currentKnowledgeIter.next();
+					response.append(this.provideTheory(this.currentKnowledge));
+				}	
 			}
 			
 			else if (this.state == SuggestionTypes.ASKING_VAR && !this.currentKnowledge.checkAnswer(answer)) {
@@ -135,6 +132,10 @@ public class SuggestionsProvider {
 				response.append(this.provideEquationAnswer(this.currentKnowledge));
 				this.currentKnowledge = this.currentKnowledgeIter.next();
 				response.append(this.provideTheory(this.currentKnowledge));
+			}
+			
+			else{
+				response.append("Mình chưa hiểu ý bạn lắm, bạn có thể nhập lại không?");
 			}
 			
 			if (!this.currentKnowledgeIter.hasNext()) {				

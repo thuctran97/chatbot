@@ -16,7 +16,11 @@ public class KnowledgeBase{
 	}
 	
 	public String getFormula() {
-		return this.formula;
+		String [] tokens = this.formula.split(" : ",-1);
+		if (tokens.length != 1)
+			return tokens[0] + " $" + tokens[1] + "$";
+		else
+			return tokens[0];
 	}
 	
 
@@ -37,6 +41,7 @@ public class KnowledgeBase{
 		StringBuilder builder = new StringBuilder();
 		for (Equation equa : this.equations)
 			builder.append("$").append(bot.getConnector().getLatex(equa.getLhs())).append("$,");
+		builder.deleteCharAt(builder.length() - 1);
 		return builder.toString();
 	}		
 

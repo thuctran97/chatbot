@@ -182,8 +182,7 @@ public class Bot {
 		this.arguments.clear();
 		this.state = BotState.AFTER_GREETING;
 		this.currentProblemType = null;
-		this.currentProblem = null;
-		this.connector.reset();
+		this.currentProblem = null;		
 		this.instructor.reset();
 	}
 	

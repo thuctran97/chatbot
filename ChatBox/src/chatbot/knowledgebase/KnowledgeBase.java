@@ -50,12 +50,16 @@ public class KnowledgeBase{
 		if (tokens.length != this.equations.size())
 			return false;
 		else {
+			int count = 0;
 			for (int i = 0; i < tokens.length; i++) {
-				if (!(this.equations.get(i).matchValue(tokens[i]))){
-					return false;
+				for (Equation equa : this.equations)
+				if (equa.matchValue(tokens[i])){
+					count++;
 				}
 			}			
-			return true;
+			if (count == tokens.length)
+				return true;
+			return false;
 		}
 	}
 	

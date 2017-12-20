@@ -29,7 +29,7 @@ public class OpenMapleConnector {
 		public void textCallBack( Object data, int tag, String output ) throws MapleException{
 	        switch ( tag ){
 		        case MAPLE_TEXT_OUTPUT:		
-		        	
+		        	System.out.print("Text: ");
 		            break;
 		        case MAPLE_TEXT_DIAG:
 		            System.out.print( "Diag: " );
@@ -53,6 +53,7 @@ public class OpenMapleConnector {
 		            System.out.print( "Debug: " );
 		            break;
 		    }		    
+	        System.out.println(output);
 	    }
 		
 	    public void errorCallBack( Object data, int offset, String msg ) throws MapleException{
@@ -107,6 +108,20 @@ public class OpenMapleConnector {
 	    public static void clearSolution() {
 	    	solution.clear();
 	    }	    
+	    
+	    public static void clearLatex() {
+	    	latex = "";
+	    }
+	    
+	    public static void setTagLatex() {
+	    	tagLatex = 1;
+	    	tagSolution = 0;
+	    }
+	    
+	    public static void setTagSolution() {
+	    	tagSolution = 1;
+	    	tagLatex = 1;
+	    }
 	   
 	}
 	
@@ -140,34 +155,33 @@ public class OpenMapleConnector {
 		if (this.procedure != null)
 			try {
 				CallBacks.clearSolution();
-				CallBacks.tagLatex = 0;
-				CallBacks.tagSolution = 1;
+				CallBacks.setTagSolution();
 				this.procedure.execute(arguments);
 				return CallBacks.getSolution();
-			} catch (MapleException e){				
+			} catch (MapleException e){		
+				e.printStackTrace();
 				System.out.println("Could not execute the procedure");				
 			}		
 		return null;
-	}
-	
-	public void reset(){
-		try {
-			this.engine.restart();
-		}catch (MapleException e) {
-			System.out.println("Không reset Maple được");
-		}
-	}
+	}	
 	
 	public String getLatex(String expression) {
 		try {
-			CallBacks.latex = "";
-			CallBacks.tagLatex = 1;
-			CallBacks.tagSolution = 0;
-			this.engine.evaluate("latex(" + expression + ");");
+			CallBacks.clearLatex();
+			CallBacks.setTagLatex();
+			this.engine.evaluate("latex(" + expression + "):");
 			return CallBacks.latex;
 		}catch (MapleException e) {
-			System.out.print(e);
+			e.printStackTrace();
 			return expression;
+		}
+	}
+	
+	public void restart() {
+		try {
+			this.engine.restart();
+		}catch (MapleException e) {
+			e.printStackTrace();
 		}
 	}
 	

@@ -16,7 +16,7 @@ public class ConnectorUtilities {
 				Name name = (Name)engine.evaluate(names[i] + ":");			
 				name.assign(engine.evaluate(arguments.get(i) + ":"));
 				argu[i] = name;
-			}
+			}		
 			return argu;
 		}catch(MapleException e) {
 			e.printStackTrace();

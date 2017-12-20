@@ -6,6 +6,7 @@ public class Equation {
 	private	String lhs;
 	private String operator;
 	private String latex;
+	private String lhsLatex;
 	
 	String[] comparisionOperator = new String[]{">=","<=",">","<","="};
 	
@@ -37,6 +38,9 @@ public class Equation {
 		return this.latex;
 	}
 
+	public String getLhsLatex() {
+		return this.lhsLatex;
+	}
 	
 	public Equation(String rhs, String operator, String lhs) {
 		this.rhs = rhs;
@@ -55,6 +59,12 @@ public class Equation {
 			}
 		}
 		this.latex = latex;
+		for (int i = 0; i < comparisionOperator.length; i++) {
+			if ((pos = latex.lastIndexOf(comparisionOperator[i])) != - 1) {								
+				this.lhsLatex = latex.substring(0, pos);				
+				break;
+			}
+		}
 	}
 		
 	

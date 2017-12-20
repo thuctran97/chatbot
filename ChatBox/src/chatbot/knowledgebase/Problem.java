@@ -2,34 +2,34 @@ package chatbot.knowledgebase;
 
 	
 public enum Problem{
-	TIEP_TUYEN_TAI_DIEM(null,
-						null,
-						null,
-						null,
+	TIEP_TUYEN_TAI_DIEM("KSHS1[tieptuyen_taidiem]",
+						"(f,x,y)",
+						new String[] {"f","x","y"},
+						new String[] {"","hoành độ tiếp điểm", "tung độ tiếp điểm"},
 						"Bài toán tiếp tuyến tại điểm cho trước",
 						ProblemType.PHUONG_TRINH_TIEP_TUYEN,
 						1),
 	
-	TIEP_TUYEN_SONG_SONG(null,
-						null,
-						null,
-						null,
+	TIEP_TUYEN_SONG_SONG("KSHS1[tieptuyen_songsong]",
+						"(f,d)",
+						new String[] {"f","d"},
+						new String[] {"","phương trình đường thẳng song song  với tiếp tuyến"},						
 						"Bài toán tiếp tuyến song song với đường thẳng cho trước",
 						ProblemType.PHUONG_TRINH_TIEP_TUYEN,
 						3),
 	
-	TIEP_TUYEN_VUONG_GOC(null,
-						null,
-						null,
-						null,
+	TIEP_TUYEN_VUONG_GOC("KSHS1[tieptuyen_vuonggoc]",
+						"(f,d)",
+						new String[] {"f","d"},
+						new String[] {"","phương trình đường thẳng vuông góc với tiếp tuyến"},
 						"Bài toán tiếp tuyến vuông góc với đường thẳng cho trước",
 						ProblemType.PHUONG_TRINH_TIEP_TUYEN,
 						4),
 	
-	TIEP_TUYEN_HE_SO_GOC(null,
-						null,
-						null,
-						null,
+	TIEP_TUYEN_HE_SO_GOC("KSHS1[tieptuyen_hesogoc]",
+						"(f,k)",
+						new String[] {"f","k"},
+						new String[] {""," hệ số góc k"},
 						"Bài toán tiếp tuyến có hệ số góc cho trước",
 						ProblemType.PHUONG_TRINH_TIEP_TUYEN,
 						5),
@@ -38,7 +38,7 @@ public enum Problem{
 			null,
 			null,
 			null,
-			"Bài toán tiếp tuyến song song cắt với đường thẳng cho trước",
+			"Bài toán tiếp tuyến cắt với đường thẳng cho trước",
 			ProblemType.PHUONG_TRINH_TIEP_TUYEN,
 			2),
 
@@ -99,7 +99,7 @@ public enum Problem{
 		this.variableDescription = variableDescription;
 		this.description = description;
 		this.type = type;
-		this.currentArgumentIndex = 0;
+		this.currentArgumentIndex = 1;
 		this.id = id;
 	}
 	

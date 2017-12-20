@@ -40,7 +40,7 @@ public class KnowledgeBase{
 	public String getAllLhs(Bot bot) {
 		StringBuilder builder = new StringBuilder();
 		for (Equation equa : this.equations)
-			builder.append("$").append(bot.getConnector().getLatex(equa.getLhs())).append("$,");
+			builder.append("$").append(equa.getLhsLatex()).append("$,");
 		builder.deleteCharAt(builder.length() - 1);
 		return builder.toString();
 	}		

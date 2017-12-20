@@ -47,41 +47,42 @@ public class SuggestionsProvider {
 		this.state = state;
 	}
 
-	public String provideTheory(KnowledgeBase current) {
+	public String provideTheory() {
 		StringBuilder builder = new StringBuilder("bạn cần phải ");	
-		builder.append(current.getTheory());		
+		builder.append(this.currentKnowledge.getTheory());		
 		builder.append("<br//>Bạn đã biết cách làm chưa?");
 		return builder.toString();
 	}
 	
-	public String provideEquation(KnowledgeBase current) {
+	public String provideEquation() {
 		StringBuilder builder = new StringBuilder();
-		String rhs = current.getAllLhs(this.bot);
+		String rhs = this.currentKnowledge.getAllLhs(this.bot);
 		builder.append("Vậy bạn hãy nhập đáp án của ").append(rhs);		
 		return builder.toString();
 	}
 		
-	public String provideFormula(KnowledgeBase current) {
+	public String provideFormula() {
 		this.state = SuggestionTypes.ASKING_FORMULAR;
 		StringBuilder builder = new StringBuilder();
-		builder.append("Gợi ý nhé: bạn phải " );
-		builder.append(current.getFormula());
+		builder.append("Gợi ý cho bạn nhé: " );
+		builder.append(this.currentKnowledge.getFormula());
 		builder.append("<br//>Bạn đã hiểu chưa?");
 		return builder.toString();		
 	}
 	
-	public String provideEquationAnswer(KnowledgeBase current) {
+	public String provideEquationAnswer() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Bạn cần phải tính như thế này: ");
-		List<Equation> equations = current.getEquations();
+		List<Equation> equations = this.currentKnowledge.getEquations();
 		for (Equation equation : equations)
 		builder.append("$").append(equation.getLatex()).append("$<br//>");
 		if (currentKnowledgeIter.hasNext()) {
 			builder.append("Tiếp theo ");
 			this.state = SuggestionTypes.ASKING_THEORY;
 			this.currentKnowledge = this.currentKnowledgeIter.next();
-			builder.append(this.provideTheory(this.currentKnowledge));
+			builder.append(this.provideTheory());
 		}else {
+			this.state = SuggestionTypes.ENDING;
 			builder.append("<br//>Đã xong, mời bạn nhập hàm số khác");
 		}
 		return builder.toString();		
@@ -94,25 +95,25 @@ public class SuggestionsProvider {
 		StringBuilder response = new StringBuilder();
 		if (answer.isEmpty()) {
 			response.append("Để giải bài toán này trước hết ");
-			response.append(this.provideTheory(this.currentKnowledge));					
+			response.append(this.provideTheory());					
 		}
 		else if ((this.state == SuggestionTypes.ASKING_THEORY && SentenceGroups.positiveResponse.contains(answer.toLowerCase())) ||
 				(this.state == SuggestionTypes.ASKING_FORMULAR && SentenceGroups.positiveResponse.contains(answer.toLowerCase()))) {
 			this.state = SuggestionTypes.ASKING_VAR;
-			response.append(this.provideEquation(this.currentKnowledge));				
+			response.append(this.provideEquation());				
 		}
 		else if (this.state == SuggestionTypes.ASKING_THEORY && SentenceGroups.negativeResponse.contains(answer.toLowerCase())) {							
-			response.append(this.provideFormula(this.currentKnowledge));
+			response.append(this.provideFormula());
 		}
 		
 		else if (this.state == SuggestionTypes.ASKING_FORMULAR && SentenceGroups.negativeResponse.contains(answer.toLowerCase())) {
 			response.append("Vậy để mình cho bạn xem lời giải của bước này: <br//>");
-			response.append(this.provideEquationAnswer(this.currentKnowledge));
+			response.append(this.provideEquationAnswer());
 		}
 		
 		else if (this.state == SuggestionTypes.ASKING_VAR && SentenceGroups.negativeResponse.contains(answer.toLowerCase())) {
 			this.state = SuggestionTypes.ASKING_THEORY;
-			response.append(this.provideEquationAnswer(this.currentKnowledge));	
+			response.append(this.provideEquationAnswer());	
 		}
 		
 		else if (this.state == SuggestionTypes.ASKING_VAR && this.currentKnowledge.checkAnswer(answer)){
@@ -121,15 +122,16 @@ public class SuggestionsProvider {
 			if (currentKnowledgeIter.hasNext()) {		
 				response.append("Tiếp theo ");
 				this.currentKnowledge = this.currentKnowledgeIter.next();
-				response.append(this.provideTheory(this.currentKnowledge));
+				response.append(this.provideTheory());
 			}else {
+				this.state = SuggestionTypes.ENDING;
 				response.append("<br//>Đã xong, mời bạn nhập hàm số khác");
 			}
 		}
 		
 		else if (this.state == SuggestionTypes.ASKING_VAR && !this.currentKnowledge.checkAnswer(answer)) {
 			response.append("Sai rồi<br//>");				
-			response.append(this.provideEquationAnswer(this.currentKnowledge));			
+			response.append(this.provideEquationAnswer());			
 		}
 		
 		else{

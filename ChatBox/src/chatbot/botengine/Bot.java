@@ -104,6 +104,7 @@ public class Bot {
 				return this.providingSuggestion("");				 
 			}
 			response.append("Mời bạn nhập ").append((currentProblem.getVariableDescription()[currentProblem.getCurrentArgumentsIndex()]));
+			this.currentProblem.increaseCurrentArgumentsIndex();
 			this.state = this.state.next();
 			return response.toString();
 		}catch(NumberFormatException e) {
@@ -123,13 +124,14 @@ public class Bot {
 		}
 		StringBuilder response = new StringBuilder();		
 		this.arguments.add(value);		
-		this.currentProblem.increaseCurrentArgumentsIndex();	
-		if (this.currentProblem.getCurrentArgumentsIndex() == this.currentProblem.getVariableNames().length - 1) {					
+			
+		if (this.currentProblem.getCurrentArgumentsIndex() > this.currentProblem.getVariableNames().length - 1) {					
 			this.state = state.next();
 			this.instructor.setSolutions(this.getSolutionSenteces());	
 			return this.providingSuggestion("");
-		}
-		response.append("Mời bạn nhập ").append((currentProblem.getVariableDescription()[currentProblem.getCurrentArgumentsIndex()]));			
+		}		
+		response.append("Mời bạn nhập ").append((currentProblem.getVariableDescription()[currentProblem.getCurrentArgumentsIndex()]));
+		this.currentProblem.increaseCurrentArgumentsIndex();
 		return response.toString();
 		
 	}
@@ -162,7 +164,7 @@ public class Bot {
 			return this.handlingAskingForArguments(msg);
 		}
 		
-		else {			
+		else {						
 			return this.handlingProvidingSuggestion(msg);			
 		}
 	}
@@ -184,6 +186,7 @@ public class Bot {
 		this.currentProblemType = null;
 		this.currentProblem = null;		
 		this.instructor.reset();
+		this.connector.restart();
 	}
 	
 	

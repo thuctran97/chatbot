@@ -10,6 +10,14 @@ public enum Problem{
 						ProblemType.PHUONG_TRINH_TIEP_TUYEN,
 						1),
 	
+	TIEP_TUYEN_HE_SO_GOC("KSHS1[tieptuyen_hesogoc]",
+			"(f,k)",
+			new String[] {"f","k"},
+			new String[] {""," hệ số góc k"},
+			"Bài toán tiếp tuyến có hệ số góc cho trước",
+			ProblemType.PHUONG_TRINH_TIEP_TUYEN,
+			2),
+	
 	TIEP_TUYEN_SONG_SONG("KSHS1[tieptuyen_songsong]",
 						"(f,d)",
 						new String[] {"f","d"},
@@ -26,15 +34,6 @@ public enum Problem{
 						ProblemType.PHUONG_TRINH_TIEP_TUYEN,
 						4),
 	
-	TIEP_TUYEN_HE_SO_GOC("KSHS1[tieptuyen_hesogoc]",
-						"(f,k)",
-						new String[] {"f","k"},
-						new String[] {""," hệ số góc k"},
-						"Bài toán tiếp tuyến có hệ số góc cho trước",
-						ProblemType.PHUONG_TRINH_TIEP_TUYEN,
-						5),
-	
-	
 	XET_TINH_DONG_BIEN("KSHS1[dongbien]",
 					"(f,x,m,a,b)",
 					new String[] {"f","x","m","a","b"},
@@ -49,15 +48,8 @@ public enum Problem{
 						new String[] {"","tên biến","tên tham số","cận dưới a của khoảng đang xét","cận trên b của khoảng đang xét"},
 						"Xét tính nghịch biến của hàm số",
 						ProblemType.DON_DIEU_HAM_SO,
-						2),
+						2);
 	
-	KHAO_SAT_HAM_SO("KSHS1[kshs]",
-					"(f)",
-					new String[] {"f"},					
-					new String[] {""},
-					"Khảo sát hàm số",
-					ProblemType.DON_DIEU_HAM_SO,
-					3);
 	
 	private String proc;
 	private String arguments;	

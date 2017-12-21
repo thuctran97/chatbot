@@ -66,6 +66,8 @@ body {
 
 .friend .chat-message {
 	background: #1adda4;
+	white-space: nowrap;
+ 	word-wrap: break-word;
  	width:auto;
 	
 }
@@ -76,8 +78,9 @@ body {
 .self .chat-message {
 	background: #1ddced;
 	order: -1;
+	white-space: nowrap;
+	word-wrap: break-word;
 	width:auto;
-
 }
 
 .chat-form {

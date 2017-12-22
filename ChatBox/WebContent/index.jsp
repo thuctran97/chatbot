@@ -30,12 +30,12 @@
 			control = '<li lang="latex">' + '<div class="chat self" >'
 					+ '<div>' +'<img src="image/user.png"  class="user-photo">'+ '</div>'
 					+ '<p class="chat-message">' + text + '</p>' + '</div>'
-					+ '</li>';
+					+ '</li><br/><br/>';
 		} else {
 			control = '<li lang="latex">' + '<div class="chat friend" >'
 					+ '<div >' +'<img src="image/bot.png" class="user-photo">'+ '</div>'
 					+ '<p class="chat-message" >' + text + '</p>' + '</div>'
-					+ '</li>';
+					+ '</li><br/>';
 		}
 		$("ul").append(control);
 		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);

@@ -1,7 +1,6 @@
 package chatbot.botengine;
 
 import java.util.*;
-import com.maplesoft.openmaple.Algebraic;
 
 import chatbot.knowledgebase.*;
 import chatbot.mapletools.*;
@@ -42,7 +41,7 @@ public class Bot {
 	}
 	
 	public void setProblem(Problem proc) {
-		this.connector.setProcedure(proc);
+		this.currentProblem = proc;
 	}
 	
 	public String handlingAfterGreeting(String equation) {
@@ -95,10 +94,10 @@ public class Bot {
 		try {
 			int option = Integer.parseInt(msg);
 			this.currentProblem = problems.get(this.currentProblemType).get(option);
-			this.connector.setProcedure(this.currentProblem);
-			StringBuilder response =  new StringBuilder("Bạn đã chọn bài toán ");
+			this.setProblem(this.currentProblem);
+			StringBuilder response =  new StringBuilder("Bạn đã chọn ");
 			response.append(this.currentProblem.getDescription()).append("<br/.>");
-			if (this.currentProblem.getVariableNames().length == 1) {	
+			if (this.currentProblem.getVariableDescription().length == 1) {	
 				this.state = BotState.PROVIDING_SUGGESTION;
 				this.instructor.setSolutions(this.getSolutionSenteces());	
 				return this.providingSuggestion("");				 
@@ -125,7 +124,7 @@ public class Bot {
 		StringBuilder response = new StringBuilder();		
 		this.arguments.add(value);		
 			
-		if (this.currentProblem.getCurrentArgumentsIndex() > this.currentProblem.getVariableNames().length - 1) {					
+		if (this.currentProblem.getCurrentArgumentsIndex() > this.currentProblem.getVariableDescription().length - 1) {					
 			this.state = state.next();
 			this.instructor.setSolutions(this.getSolutionSenteces());	
 			return this.providingSuggestion("");
@@ -171,22 +170,22 @@ public class Bot {
 	
 	
 	public List<KnowledgeBase> getSolutionSenteces() {		
-		List<KnowledgeBase> solution = Parser.parsingSolution(this.getSolution(this.arguments, this.currentProblem.getVariableNames()));		
+		List<KnowledgeBase> solution = Parser.parsingSolution(this.getSolution(this.arguments));		
 		return solution;
 	}
 	
-	public List<String> getSolution(List<String> arguments, String[] variableNames){
-		Algebraic[] argu = ConnectorUtilities.generateArguments(connector, arguments, variableNames);
-		return this.connector.getSolution(argu);
+	public List<String> getSolution(List<String> arguments){
+		String proc = ConnectorUtilities.generateProcedure(this.currentProblem, arguments);
+		return this.connector.getSolution(proc);
 	}
 	
 	public void reset() {
 		this.arguments.clear();
 		this.state = BotState.AFTER_GREETING;
 		this.currentProblemType = null;
+		this.currentProblem.reset();
 		this.currentProblem = null;		
-		this.instructor.reset();
-		this.connector.restart();
+		this.instructor.reset();		
 	}
 	
 	

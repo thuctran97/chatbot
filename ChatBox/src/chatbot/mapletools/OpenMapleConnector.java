@@ -2,25 +2,19 @@ package chatbot.mapletools;
 
 import com.maplesoft.externalcall.MapleException;
 import com.maplesoft.openmaple.*;
-import com.maplesoft.util.encoder.*;
 
 import java.util.*;
-import chatbot.knowledgebase.*;
 
 public class OpenMapleConnector {
-	private  Engine engine;
-	private  Procedure procedure;	
+	private String procedure;	
+	private CallBacks callBacks;
+	private Engine engine;
 	
-	static private class CallBacks implements EngineCallBacks{
+	public class CallBacks implements EngineCallBacks{
 		
 		private boolean limitExceeded;
 		
-		public static java.util.List<String> solution = new ArrayList<>();
-		
-		private static String latex ="";
-		
-		private static int tagLatex = 0;
-		private static int tagSolution = 0;
+		public java.util.List<String> solution = new ArrayList<>();
 		
 		
 		private CallBacks(){
@@ -34,11 +28,8 @@ public class OpenMapleConnector {
 		        case MAPLE_TEXT_DIAG:
 		            System.out.print( "Diag: " );
 		            break;
-		        case MAPLE_TEXT_MISC:
-		        	if (tagLatex == 1 && tagSolution == 0)
-		        		latex=output;
-		        	else
-		        		solution.add(UTF8Encoder.convertUnicodeToUtf8(output));	
+		        case MAPLE_TEXT_MISC:		        	
+		        	solution.add(output);	
 		            break;
 		        case MAPLE_TEXT_HELP:
 		            System.out.print( "Help: " );
@@ -101,88 +92,44 @@ public class OpenMapleConnector {
 		        return args[0]+":";
 	    }
 	    
-	    public static java.util.List<String> getSolution(){
-	    	return solution;
+	    public java.util.List<String> getSolution(){
+	    	return this.solution;
 	    }
 	
-	    public static void clearSolution() {
-	    	solution.clear();
-	    }	    
-	    
-	    public static void clearLatex() {
-	    	latex = "";
-	    }
-	    
-	    public static void setTagLatex() {
-	    	tagLatex = 1;
-	    	tagSolution = 0;
-	    }
-	    
-	    public static void setTagSolution() {
-	    	tagSolution = 1;
-	    	tagLatex = 1;
-	    }
+	    public void clearSolution() {
+	    	this.solution.clear();
+	    }	    	    
 	   
 	}
 	
-	public OpenMapleConnector() {
+	public OpenMapleConnector() {				
 		try {
-			String[] args = {"java"};
-			this.engine = new Engine(args, new CallBacks(), null, null);			
-		}catch (MapleException e) {
-			System.out.println("Cannot intialize maple's engine");
+			this.callBacks = new CallBacks();
+			this.procedure = "";
+			String[] init = {"java"};
+			this.engine = new Engine (init, this.callBacks, null, null);
+		}catch(MapleException e) {
+			e.printStackTrace();
+			System.out.println("Could not initialize maple session");
 		}
 	}
 	
-	public Engine getEngine() {
-		return engine;
-	}
-	
-	public Procedure getProcedure() {
+	public String getProcedure() {
 		return this.procedure;
 	}
 
-	public void setProcedure(Problem proc) {
-		try {
-			String eval = "proc" + proc.getArguments() + proc.getProcedureName() + proc.getArguments() +";end proc:";
-			this.procedure = (Procedure)this.engine.evaluate(eval);
-		}catch (MapleException e) {
-			System.out.println("Could not intialize the procedure");
-		}
-	}
 
-	public java.util.List<String> getSolution(Algebraic[] arguments) {
-		if (this.procedure != null)
-			try {
-				CallBacks.clearSolution();
-				CallBacks.setTagSolution();
-				this.procedure.execute(arguments);
-				return CallBacks.getSolution();
-			} catch (MapleException e){		
-				e.printStackTrace();
-				System.out.println("Could not execute the procedure");				
-			}		
-		return null;
+	public java.util.List<String> getSolution(String proc) {
+		try {
+			this.callBacks.clearSolution();									
+			this.engine.evaluate(proc);			
+			return this.callBacks.getSolution();
+		} catch (MapleException e){		
+			e.printStackTrace();
+			System.out.println("Could not execute the procedure");			
+			return null;
+		}		
 	}	
 	
-	public String getLatex(String expression) {
-		try {
-			CallBacks.clearLatex();
-			CallBacks.setTagLatex();
-			this.engine.evaluate("latex(" + expression + "):");
-			return CallBacks.latex;
-		}catch (MapleException e) {
-			e.printStackTrace();
-			return expression;
-		}
-	}
-	
-	public void restart() {
-		try {
-			this.engine.restart();
-		}catch (MapleException e) {
-			e.printStackTrace();
-		}
-	}
 	
 }

@@ -70,7 +70,7 @@
 <link href="css/style.css" rel="stylesheet" /> 
 </head>
 <body>
-	<h1 id="title">Chatbot hướng dẫn giải toán khảo sát hàm số</h1>
+	<h1 id="title">Chatbot hướng dẫn giải các bài toán về hàm số</h1>
 	<hr>
 	<div class="row">
 		<div class="col-sm-3"></div>
@@ -82,7 +82,7 @@
 							<div>
 								<img src="image/bot.png" class="user-photo">
 							</div>
-							<p class="chat-message">Xin chào mình có thể giúp gì cho bạn</p>
+							<p class="chat-message">Chào bạn, để bắt đầu bạn hãy nhập một hàm số giúp mình nhé</p>
 						</div>
 					</li>
 				</ul>

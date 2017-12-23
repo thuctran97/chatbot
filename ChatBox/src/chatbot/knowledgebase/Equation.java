@@ -42,33 +42,18 @@ public class Equation {
 		return this.lhsLatex;
 	}
 	
-	public Equation(String rhs, String operator, String lhs) {
-		this.rhs = rhs;
-		this.operator = operator;
-		this.lhs = lhs;
-	}
-	
-	public Equation(String equa, String latex) {		
+	public Equation(String equa, String lhsLatex, String latex) {		
 		int pos;
-		String comparator="";
 		for (int i = 0; i < comparisionOperator.length; i++) {
 			if ((pos = equa.lastIndexOf(comparisionOperator[i])) != - 1) {				
-				this.operator = equa.substring(pos, pos + comparisionOperator[i].length());
-				this.lhs = equa.substring(0, pos);
-				this.rhs = equa.substring(pos + comparisionOperator[i].length(), equa.length());
-				comparator = comparisionOperator[i];
+				this.operator = equa.substring(pos, pos + comparisionOperator[i].length()).trim();
+				this.lhs = equa.substring(0, pos).trim();
+				this.rhs = equa.substring(pos + comparisionOperator[i].length(), equa.length()).trim();
 				break;
 			}
 		}
 		this.latex = latex;
-		/*for (int i = 0; i < comparisionOperator.length; i++) {
-			if ((pos = latex.lastIndexOf(comparisionOperator[i])) != - 1) {								
-				this.lhsLatex = latex.substring(0, pos);				
-				break;
-			}
-		}*/
-		pos = latex.lastIndexOf(comparator);
-		this.lhsLatex = latex.substring(0,pos);
+		this.lhsLatex = lhsLatex;
 	}
 		
 	

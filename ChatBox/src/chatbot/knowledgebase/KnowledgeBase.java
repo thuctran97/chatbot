@@ -28,8 +28,8 @@ public class KnowledgeBase{
 		this.theory = tokens[0];
 		this.formula = tokens[1];
 		this.equations = new ArrayList<>();
-		for (int i = 2; i < tokens.length; i+= 2)
-			equations.add(new Equation(tokens[i], tokens[i+1]));
+		for (int i = 2; i < tokens.length; i+= 3)
+			equations.add(new Equation(tokens[i], tokens[i+1], tokens[i+2]));
 	}
 	
 	@Override

@@ -75,7 +75,8 @@ public class SuggestionsProvider {
 		builder.append("Đáp án là: ");
 		List<Equation> equations = this.currentKnowledge.getEquations();
 		for (Equation equation : equations)
-		builder.append("$").append(equation.getLatex()).append("$<br//>");
+			builder.append("$").append(equation.getLatex()).append("$, ");
+		builder.append("<br//>");
 		if (currentKnowledgeIter.hasNext()) {
 			builder.append("Tiếp theo ");
 			this.state = SuggestionTypes.ASKING_THEORY;

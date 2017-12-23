@@ -39,22 +39,28 @@ public class KnowledgeBase{
 		
 	public String getAllLhs(Bot bot) {
 		StringBuilder builder = new StringBuilder();
-		for (Equation equa : this.equations)
-			builder.append("$").append(equa.getLhsLatex()).append("$,");
+		for (Equation equa : this.equations){
+				builder.append("$").append(equa.getLhsLatex()).append("$,");
+		}
 		builder.deleteCharAt(builder.length() - 1);
 		return builder.toString();
 	}		
 
 	public boolean checkAnswer(String answer) {
 		String[] tokens = answer.split(",");
+		
 		if (tokens.length != this.equations.size())
 			return false;
 		else {
+			int[] flag = new int[equations.size()];
+			for (int i = 0; i < flag.length; i++)
+				flag[i] = 0;
 			int count = 0;
 			for (int i = 0; i < tokens.length; i++) {
 				for (Equation equa : this.equations)
-				if (equa.matchValue(tokens[i])){
+				if (equa.matchValue(tokens[i]) && flag[i] == 0){
 					count++;
+					flag[i] = 1;
 				}
 			}			
 			if (count == tokens.length)

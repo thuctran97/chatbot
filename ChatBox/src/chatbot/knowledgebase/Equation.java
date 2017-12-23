@@ -8,7 +8,7 @@ public class Equation {
 	private String latex;
 	private String lhsLatex;
 	
-	String[] comparisionOperator = new String[]{">=","<=",">","<","="};
+	private static String[] comparisionOperator = new String[]{">=","<=",">","<","="};
 	
 	public String getRhs() {
 		return rhs;
@@ -50,21 +50,25 @@ public class Equation {
 	
 	public Equation(String equa, String latex) {		
 		int pos;
+		String comparator="";
 		for (int i = 0; i < comparisionOperator.length; i++) {
 			if ((pos = equa.lastIndexOf(comparisionOperator[i])) != - 1) {				
 				this.operator = equa.substring(pos, pos + comparisionOperator[i].length());
 				this.lhs = equa.substring(0, pos);
 				this.rhs = equa.substring(pos + comparisionOperator[i].length(), equa.length());
+				comparator = comparisionOperator[i];
 				break;
 			}
 		}
 		this.latex = latex;
-		for (int i = 0; i < comparisionOperator.length; i++) {
+		/*for (int i = 0; i < comparisionOperator.length; i++) {
 			if ((pos = latex.lastIndexOf(comparisionOperator[i])) != - 1) {								
 				this.lhsLatex = latex.substring(0, pos);				
 				break;
 			}
-		}
+		}*/
+		pos = latex.lastIndexOf(comparator);
+		this.lhsLatex = latex.substring(0,pos);
 	}
 		
 	
@@ -91,9 +95,39 @@ public class Equation {
 	}
 	
 	public boolean matchValue(String value) {
-		return (this.lhs + this.operator+this.rhs).compareTo(value) == 0||
-				(this.operator + this.rhs).compareTo(value) == 0 || 
-				this.rhs.compareTo(value) == 0;
+		if ((this.lhs + this.operator+this.rhs).compareTo(value) == 0)
+				return true;
+		if ((this.operator + this.rhs).compareTo(value) == 0)
+				return true;
+		if (this.rhs.compareTo(value) == 0 && this.operator.compareTo("=") == 0)
+				return true;
+		if ((this.rhs + this.operator + this.lhs).compareTo(value) == 0 && this.operator.compareTo("=") == 0)
+				return true;
+		if (this.operator.compareTo(">") == 0){
+			if ((this.rhs+"<"+this.lhs).compareTo(value) == 0)
+				return true;
+			if (("<"+this.lhs).compareTo(value) == 0)
+				return true;
+		}
+		if (this.operator.compareTo(">=") == 0){
+			if ((this.rhs+"<="+this.lhs).compareTo(value) == 0)
+				return true;
+			if (("<="+this.lhs).compareTo(value) == 0)	
+				return true;
+		}
+		if (this.operator.compareTo("<=") == 0){
+			if ((this.rhs+">="+this.lhs).compareTo(value) == 0)
+				return true;
+			if ((">="+this.lhs).compareTo(value) == 0)
+				return true;
+		}
+		if (this.operator.compareTo("<") == 0){
+			if ((this.rhs+">"+this.lhs).compareTo(value) == 0)
+				return true;
+			if ((">"+this.lhs).compareTo(value) == 0)
+				return true;
+		}
+		return false;
 	}
 
 }

@@ -72,7 +72,7 @@ public class SuggestionsProvider {
 	
 	public String provideEquationAnswer() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Bạn cần phải tính như thế này: ");
+		builder.append("Đáp án là: ");
 		List<Equation> equations = this.currentKnowledge.getEquations();
 		for (Equation equation : equations)
 		builder.append("$").append(equation.getLatex()).append("$<br//>");
@@ -118,15 +118,7 @@ public class SuggestionsProvider {
 		
 		else if (this.state == SuggestionTypes.ASKING_VAR && this.currentKnowledge.checkAnswer(answer)){
 			response.append("Đúng rồi<br//>");
-			this.state = SuggestionTypes.ASKING_THEORY;		
-			if (currentKnowledgeIter.hasNext()) {		
-				response.append("Tiếp theo ");
-				this.currentKnowledge = this.currentKnowledgeIter.next();
-				response.append(this.provideTheory());
-			}else {
-				this.state = SuggestionTypes.ENDING;
-				response.append("<br//>Đã xong, mời bạn nhập hàm số khác");
-			}
+			response.append(this.provideEquationAnswer());
 		}
 		
 		else if (this.state == SuggestionTypes.ASKING_VAR && !this.currentKnowledge.checkAnswer(answer)) {

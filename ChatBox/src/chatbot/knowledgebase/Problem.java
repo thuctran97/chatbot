@@ -20,7 +20,7 @@ public enum Problem{
 				ProblemType.CUC_TRI_HAM_SO,
 				1),
 	
-	TIM_M_DE_CO_CUC_TRI("KSHS[cuctri]",
+	TIM_M_DE_CO_CUC_TRI("KSHS[cocuctri]",
 						new String[] {""},
 						"Bài toán tìm m để hàm số có cực tri",
 						ProblemType.CUC_TRI_HAM_SO,

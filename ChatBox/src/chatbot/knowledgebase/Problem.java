@@ -20,6 +20,12 @@ public enum Problem{
 				ProblemType.CUC_TRI_HAM_SO,
 				1),
 	
+	TIM_M_DE_CO_CUC_TRI("KSHS[cuctri]",
+						new String[] {""},
+						"Bài toán tìm m để hàm số có cực tri",
+						ProblemType.CUC_TRI_HAM_SO,
+						2),
+	
 	
 	TIEP_TUYEN_SONG_SONG("KSHS[tieptuyen_songsong]",
 						new String[] {"","phương trình đường thẳng song song  với tiếp tuyến"},						

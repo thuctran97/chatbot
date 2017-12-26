@@ -14,6 +14,13 @@ public enum Problem{
 						ProblemType.PHUONG_TRINH_TIEP_TUYEN,
 						2),
 	
+	TIM_CUC_TRI("KSHS[cuctri]",
+				new String[]{"","cận dưới a của khoảng đang xét", "cận trên b của khoảng đang xét"},
+				"Bài toán tìm m để hàm số đạt cực tri trong khoảng cho trước",
+				ProblemType.CUC_TRI_HAM_SO,
+				1),
+	
+	
 	TIEP_TUYEN_SONG_SONG("KSHS[tieptuyen_songsong]",
 						new String[] {"","phương trình đường thẳng song song  với tiếp tuyến"},						
 						"Bài toán tiếp tuyến song song với đường thẳng cho trước",

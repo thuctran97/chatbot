@@ -122,7 +122,8 @@ public class OpenMapleConnector {
 	public java.util.List<String> getSolution(String proc) {
 		try {
 			this.callBacks.clearSolution();									
-			this.engine.evaluate(proc);			
+			Algebraic alge = this.engine.evaluate(proc);
+			alge.dispose();
 			return this.callBacks.getSolution();
 		} catch (MapleException e){		
 			e.printStackTrace();

@@ -56,8 +56,12 @@ public class SuggestionsProvider {
 	
 	public String provideEquation() {
 		StringBuilder builder = new StringBuilder();
-		String rhs = this.currentKnowledge.getAllLhs(this.bot);
-		builder.append("Vậy bạn hãy nhập đáp án của ").append(rhs);		
+		Set<String> lhss = this.currentKnowledge.getAllLhs(this.bot);		
+		builder.append("Vậy bạn hãy nhập đáp án của ");
+		for (String x : lhss)
+			builder.append(x).append(", ");
+		builder.deleteCharAt(builder.length() - 1);
+		builder.deleteCharAt(builder.length() - 1);
 		return builder.toString();
 	}
 		

@@ -37,13 +37,13 @@ public class KnowledgeBase{
 		return "";
 	}
 		
-	public String getAllLhs(Bot bot) {
-		StringBuilder builder = new StringBuilder();
+	public Set<String> getAllLhs(Bot bot) {
+		Set<String> lhss = new LinkedHashSet<String>();
 		for (Equation equa : this.equations){
-				builder.append("$").append(equa.getLhsLatex()).append("$,");
-		}
-		builder.deleteCharAt(builder.length() - 1);
-		return builder.toString();
+				String temp = "$" + equa.getLhsLatex() + "$";
+				lhss.add(temp);
+		}		
+		return lhss;
 	}		
 
 	public boolean checkAnswer(String answer) {

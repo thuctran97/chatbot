@@ -12,5 +12,5 @@ Java, Servlet & JSP, OpenMaple
 Đặng Vũ Minh Hiếu   
 Võ Quốc Hưng   
 Nguyễn Minh Hoàng  
-Nguyễn Huỳnh Anh Khoa
+Nguyễn Huỳnh Anh Khoa  
 Trần Công Thức
